@@ -26,6 +26,8 @@ class Server {
                 category: req.body.category,
             });
 
+            // store the expenses into storage
+
             res.send(expense).status(200);
         });
     }
