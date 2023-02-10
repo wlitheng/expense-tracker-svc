@@ -2,9 +2,9 @@
   "name": "expense-tracker-svc",
   "version": "1.0.0",
   "description": "A service to track expenses",
-  "main": "./app/bootstrap.js",
+  "main": "bootstrap.js",
   "scripts": {
-    "start": "node ./app/bootstrap.js",
+    "start": "node bootstrap.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "nodemon ./app/bootstrap.js"
   },
@@ -22,6 +22,8 @@
   },
   "homepage": "https://github.com/wlitheng/expense-tracker-svc#readme",
   "dependencies": {
+    "@azure/data-tables": "^13.2.1",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2"
   }
 }
