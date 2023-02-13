@@ -10,6 +10,16 @@ class AddExpense {
         this.category = expense.category;
         this.amount = expense.amount;
     }
+
+    /**
+     * Convert this model to entity.
+     */
+    convertToEntity() {
+        return {
+            partitionKey: `${this.user}_${this.year}_${this.month}`,
+            rowKey: `${this.id}`
+        };
+    }
 }
 
 module.exports = AddExpense;

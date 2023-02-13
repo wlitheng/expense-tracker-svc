@@ -1,4 +1,5 @@
-const { TableClient, AzureNamedKeyCredential } = require("@azure/data-tables");
+const { odata, TableClient, AzureNamedKeyCredential } = require("@azure/data-tables");
+const AddExpense = require("../../models/addExpense");
 
 class TableStorageClient {
 
@@ -15,7 +16,36 @@ class TableStorageClient {
     }
 
     async addEntity(entity = {}) {
-        this.tableClient.createEntity(entity)
+        await this.tableClient.createEntity(entity);
+    }
+
+    async getEntity(entity = {}) {
+        return await this.tableClient.getEntity(entity.partitionKey, entity.rowKey);
+    }
+
+    async getEntities(entity = {}) {
+        let results = this.tableClient.listEntities({ 
+            queryOptions: { 
+                filter: odata`PartitionKey eq ${entity.partitionKey}`, 
+            }, 
+        });
+
+        let expenses = [];
+        for await (const entity of results) {
+            expenses.push(new AddExpense({
+                id: entity.id,
+                date: entity.date,
+                month: entity.month,
+                year: entity.year,
+                title: entity.title,
+                description: entity.description,
+                user: entity.user,
+                category: entity.category,
+                amount: entity.amount
+            }));
+        }
+
+        return expenses;
     }
 }
 

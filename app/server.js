@@ -15,7 +15,15 @@ class Server {
 
         // GET /expenses/
         app.get('/expenses', async (req, res) => {
-            res.send('Miao~~~').status(200);
+            let expense = new AddExpense({
+                month: req.query.month,
+                year: req.query.year,
+                user: req.query.user,
+            });
+
+            let entity = expense.convertToEntity(expense);
+            let expenses = await this.tableStorageClient.getEntities(entity);
+            res.send(expenses).status(200);
         });
 
         app.post('/expense', async (req, res) => {
@@ -32,11 +40,8 @@ class Server {
             });
 
             // store the expenses into storage
-            let entity = {
-                partitionKey: `${expense.user}_${expense.year}_${expense.month}`,
-                rowKey: `${expense.id}`
-            };
-            this.tableStorageClient.addEntity({...entity, ...expense});
+            let entity = expense.convertToEntity();
+            await this.tableStorageClient.addEntity({...entity, ...expense});
 
             res.send(expense).status(200);
         });
