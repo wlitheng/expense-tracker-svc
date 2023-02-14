@@ -7,7 +7,7 @@ class TableStorageClient {
      * @param {Object} options Information about the table.
      * @param {string} options.tableName The name of the table.
      */
-    constructor(options = {}) {
+    init(options = {}) {
         const account = process.env.STORAGEACCOUNT;
         const accountKey = process.env.STORAGEKEY;
         
@@ -49,4 +49,4 @@ class TableStorageClient {
     }
 }
 
-module.exports = TableStorageClient;
+module.exports = new TableStorageClient();
